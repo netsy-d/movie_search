@@ -20,9 +20,20 @@ export async function searchMovies(
   query: string,
   page = 1
 ): Promise<OMDbSearchResponse> {
+  const trimmedQuery = query.trim();
+
+  if (!trimmedQuery){
+
+    return {
+      Response: "False",
+      Error: "Search query cannot be empty.",
+    };
+  }
+
+
   const params = new URLSearchParams({
     apikey: getApiKey(),
-    s: query,
+    s: trimmedQuery,
     page: String(page),
   });
 
@@ -44,9 +55,19 @@ export async function searchMovies(
 export async function getMovieById(
   imdbID: string
 ): Promise<OMDbDetailResponse> {
+  const trimmedQuery =imdbID.trim();
+
+  if (!trimmedQuery) {
+    return{
+      Response: "False",
+      Error: "imdbID cannot be empty.",
+    };
+  }
+
+
   const params = new URLSearchParams({
     apikey: getApiKey(),
-    i: imdbID,
+    i: trimmedQuery,
     plot: "full",
   });
 
