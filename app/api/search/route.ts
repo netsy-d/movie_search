@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { searchMovies } from "@/lib/omdb";
+import { getStatusForOMDbError, searchMovies } from "@/lib/omdb";
 import { isOMDbError } from "@/types/movie";
 
 
-export async function Get(request:NextRequest) {
+export async function GET(request:NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get("q")?.trim();
     const page = Number(searchParams.get("page") ?? "1");
@@ -29,9 +29,7 @@ export async function Get(request:NextRequest) {
 
             // OMDb returns Response: "False" for things like "no results found"
       // or a bad API key — treat these as normal (non-500) responses.
-        const status = result.Error.toLowerCase().includes("api key")
-        ? 401
-        : 404;
+        const status = getStatusForOMDbError(result.Error);
         return NextResponse.json({error: result.Error }, { status });
         }
 
