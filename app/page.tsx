@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import SearchBar from "./components/SearchBar";
+import MovieGrid from "./components/MovieGrid";
+import type { OMDbSearchItem } from "@/types/movie";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [movies, setMovies] = useState<OMDbSearchItem[]>([]);
 
   async function handleSearch(query: string) {
     setIsLoading(true);
@@ -18,12 +21,15 @@ export default function Home() {
 
       if (!res.ok) {
         setError(data.error ?? "Something went wrong. Please try again.");
+        setMovies([]);
+      } else {
+        setMovies(data.Search ?? []);
       }
-      // Result rendering (movie grid) lands in the next
     } catch {
       setError(
         "Couldn't reach the server. Check your connection and try again.",
       );
+      setMovies([]);
     } finally {
       setIsLoading(false);
       setHasSearched(true);
@@ -42,11 +48,7 @@ export default function Home() {
         </p>
       )}
 
-      {hasSearched && !error && !isLoading && (
-        <p className="text-sm text-neutral-500">
-          Search worked — results grid coming in the next PR.
-        </p>
-      )}
+      {hasSearched && !error && !isLoading && <MovieGrid movies={movies} />}
     </main>
   );
 }
