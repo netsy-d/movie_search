@@ -15,6 +15,34 @@ function getApiKey(): string {
   return key;
 }
 
+export function getStatusForOMDbError(errorMessage: string): number{
+   const message = errorMessage.toLowerCase();
+
+   if (message.includes("api Key")) {
+// "Invalid API key!" / "No API key provided."
+    return 401;
+   }
+
+   if (message.includes("not found") || message.includes("incorrect imdb id")) {
+
+    // "Movie not found!" / "Incorrect IMDb ID."
+
+    return 404;
+   }
+
+   if (message.includes("too many results")){
+
+    // Search term is too broad/generic for OMDb to narrow down - this 
+    // is a client-side input problem, not a missing resource.
+
+    return 400;
+   }
+
+   // Anything else (e.g.  "Error getting data.") is OMDb's own upstream
+   // issue, not something the caller's request caused.
+     return 502;
+}
+
 
 export async function searchMovies(
   query: string,
