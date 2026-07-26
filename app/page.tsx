@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import MovieGrid from "./components/MovieGrid";
+import Spinner from "./components/Spinner";
 import type { OMDbSearchItem } from "@/types/movie";
 
 export default function Home() {
@@ -42,7 +43,13 @@ export default function Home() {
 
       <SearchBar onSearch={handleSearch} isLoading={isLoading} />
 
-      {error && (
+      {isLoading && (
+        <div className="mt-8" aria-live="polite">
+          <Spinner className="h-8 w-8" />
+        </div>
+      )}
+
+      {error && !isLoading && (
         <p role="alert" className="text-sm text-red-600">
           {error}
         </p>
