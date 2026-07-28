@@ -58,7 +58,7 @@ export default function SearchBar({
         <button
           type="submit"
           disabled={isLoading || !query.trim()}
-          className="flex shrink-0 items-center gap-1.5 rounded-full bg-neutral-900 px-4 py-1.5 text-sm font-medium text-white transition-opacity disabled:opacity-40"
+          className="flex shrink-0 items-center gap-1.5 rounded-full bg-neutral-900 px-4 py-1.5 text-sm font-medium text-white transition-opacity disabled:opacity-40 cursor-pointer"
         >
           {isLoading && (
             <svg
