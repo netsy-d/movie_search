@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 import type { OMDbSearchItem } from "@/types/movie";
 
 interface MovieCardProps {
@@ -6,24 +9,26 @@ interface MovieCardProps {
 }
 
 export default function MovieCard({ movie }: MovieCardProps) {
-  const hasPoster = movie.Poster && movie.Poster !== "N/A";
+  const [imageError, setImageError] = useState(false);
+  const hasPoster = !!movie.Poster && movie.Poster !== "N/A";
+
+  const imageSrc =
+    hasPoster && !imageError ?
+    movie.Poster
+    : "/placeholder.jpg"
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-md">
       <div className="relative aspect-[2/3] w-full bg-neutral-100">
-        {hasPoster ? (
-          <Image
-            src={movie.Poster}
-            alt={`${movie.Title} poster`}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 200px"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center px-3 text-center text-xs text-neutral-400">
-            No poster available
-          </div>
-        )}
+        <Image
+          src={imageSrc}
+         alt={imageSrc === "/placeholder.jpg" ? `No poster available for ${movie.Title}` : `${movie.Title} poster`}
+
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 200px"
+          className="object-cover"
+          onError={() => setImageError(true)}
+        />
       </div>
 
       <div className="flex flex-col gap-0.5 p-3">

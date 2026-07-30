@@ -11,7 +11,7 @@ export default function MovieGrid({ movies }: MovieGridProps) {
   }
 
   return (
-    <div className="grid w-full max-w-5xl grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
+    <div className="grid w-full max-w-5xl grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-1">
       {movies.map((movie) => (
         <MovieCard key={movie.imdbID} movie={movie} />
       ))}
