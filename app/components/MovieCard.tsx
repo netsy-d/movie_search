@@ -10,9 +10,12 @@ interface MovieCardProps {
 
 export default function MovieCard({ movie }: MovieCardProps) {
   const [imageError, setImageError] = useState(false);
+  const hasPoster = !!movie.Poster && movie.Poster !== "N/A";
 
   const imageSrc =
-    imageError || movie.Poster === "N/A" ? "/placeholder.jpg" : movie.Poster;
+    hasPoster && !imageError ?
+    movie.Poster
+    : "/placeholder.jpg"
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-md">
