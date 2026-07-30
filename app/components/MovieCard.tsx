@@ -22,7 +22,8 @@ export default function MovieCard({ movie }: MovieCardProps) {
       <div className="relative aspect-[2/3] w-full bg-neutral-100">
         <Image
           src={imageSrc}
-          alt={`${movie.Title} poster`}
+         alt={imageSrc === "/placeholder.jpg" ? `No poster available for ${movie.Title}` : `${movie.Title} poster`}
+
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 200px"
           className="object-cover"
